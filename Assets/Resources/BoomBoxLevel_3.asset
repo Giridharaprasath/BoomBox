@@ -17,6 +17,9 @@ MonoBehaviour:
   CubeButtonCount: 9
   CubeButtonColumnCount: 3
   CubeButtonRowCount: 3
+  BoxButtonCount: 135
+  BoxButtonColumnCount: 10
+  BoxButtonRowCount: 14
   CubeButtonInfos:
   - CubeColor: 2
     Count: 15
@@ -81,3 +84,87 @@ MonoBehaviour:
     StartRowIndex: 0
     CurrentRowIndex: 0
     CurrentSpotIndex: -1
+  BoxButtonInfos:
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 2
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 2
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 1
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 2
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 1
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+    - BoxColor: 0
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+  - BoxButtonSetRows:
+    - BoxColor: 2
+      StartColumnIndex: 0
+      EndColumnIndex: 4

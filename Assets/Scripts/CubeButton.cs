@@ -55,14 +55,16 @@ namespace BoomBox
                 CubeColor.Yellow => Color.yellow,
                 CubeColor.Red => Color.red,
                 CubeColor.Green => Color.green,
-                CubeColor.Pink => new Color(1, 0.5f, 1),
+                CubeColor.Blue => Color.blue,
+                CubeColor.Pink => new Color(1f, 0.75f, 0.8f),
+                CubeColor.Orange => new Color(1f, 0.5f, 0f),
                 _ => Color.white,
             };
 
             CountText.text = CubeButtonInfo.Count.ToString();
 
             transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
-            transform.DOScale(Vector3.one, 0.5f);
+            transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutSine);
         }
 
         public void SetSpotIndex(int index)
@@ -84,6 +86,12 @@ namespace BoomBox
         public void OnPointerClick(PointerEventData eventData)
         {
             OnClicked?.Invoke(this);
+        }
+
+        public void DecreaseCount()
+        {
+            CubeButtonInfo.Count--;
+            CountText.text = CubeButtonInfo.Count.ToString();
         }
     }
 }

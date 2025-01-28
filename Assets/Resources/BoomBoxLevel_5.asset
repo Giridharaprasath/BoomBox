@@ -17,6 +17,9 @@ MonoBehaviour:
   CubeButtonCount: 12
   CubeButtonColumnCount: 3
   CubeButtonRowCount: 4
+  BoxButtonCount: 240
+  BoxButtonColumnCount: 10
+  BoxButtonRowCount: 12
   CubeButtonInfos:
   - CubeColor: 0
     Count: 20
@@ -102,3 +105,64 @@ MonoBehaviour:
     StartRowIndex: 0
     CurrentRowIndex: 0
     CurrentSpotIndex: -1
+  BoxButtonInfos:
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
