@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace BoomBox
 {
@@ -51,7 +52,48 @@ namespace BoomBox
         public List<BoxButton> BoxButtonToShoot;
 
         [Header("Level Complete")]
-        public GameObject LevelComplete;
+        public StarManager starManager;
+
+        [Header("Reload Button")]
+        public Button ReloadButton;
+        public Transform ReloadButtonStartPoint, ReloadButtonEndPoint;
+
+        [Header("Progress Bar")]
+        public GameObject ProgressPanel;
+        public Text[] LevelText;
+        public Transform ProgressPanelStartPoint, ProgressPanelEndPoint;
+
+        private int BoxButtonShootCount = 0;
+        private bool CheckShoot = false;
+
+        private void Start()
+        {
+            VibrationManager.Init();
+            DOTween.SetTweensCapacity(2000, 100);
+
+            CurrentLevelNumber = PlayerPrefs.GetInt("CurrentLevelNumber", 1);
+
+            CurrentBoomBoxLevel = AllBoomBoxLevels[CurrentLevelNumber - 1];
+
+            CreateCubePlaceSpots();
+            CreateBoxButtons();
+            CreateCubeButtons();
+
+            IsCubePlaceSpotOccupied = new List<bool>(new bool[CubePlaceSpots.Count]);
+
+            ReloadButton.onClick.AddListener(LoadScene);
+            ShowReloadButton();
+
+            foreach (var item in LevelText)
+            {
+                item.text = "Level " + CurrentLevelNumber;
+            }
+            ShowProgressBar();
+        }
+        private void OnDestroy()
+        {
+            DOTween.KillAll();
+        }
 
         public void SetCurrentLevel(string changeValue)
         {
@@ -64,32 +106,16 @@ namespace BoomBox
                 CurrentLevelNumber--;
             }
 
-            if (CurrentLevelNumber < 1) CurrentLevelNumber = 1;
-            if (CurrentLevelNumber > AllBoomBoxLevels.Count) CurrentLevelNumber = AllBoomBoxLevels.Count;
+            if (CurrentLevelNumber < 1) CurrentLevelNumber = AllBoomBoxLevels.Count;
+            if (CurrentLevelNumber > AllBoomBoxLevels.Count) CurrentLevelNumber = 1;
 
             PlayerPrefs.SetInt("CurrentLevelNumber", CurrentLevelNumber);
 
             LoadScene();
         }
-
         public void LoadScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        private void Start()
-        {
-            VibrationManager.Init();
-
-            CurrentLevelNumber = PlayerPrefs.GetInt("CurrentLevelNumber", 1);
-
-            CurrentBoomBoxLevel = AllBoomBoxLevels[CurrentLevelNumber - 1];
-
-            CreateCubePlaceSpots();
-            CreateBoxButtons();
-            CreateCubeButtons();
-
-            IsCubePlaceSpotOccupied = new List<bool>(new bool[CubePlaceSpots.Count]);
         }
 
         #region Level Objects Creation
@@ -118,12 +144,14 @@ namespace BoomBox
 
                     BoxButtonsParentObject.Add(boxButtonColumnObject);
                 }
+
+                boxButtonRowObject.transform.SetAsFirstSibling();
             }
 
             for (int i = 0; i < CurrentBoomBoxLevel.BoxButtonInfos.Count; i++)
             {
                 BoomBoxLevels.BoxButtonRowInfo item = CurrentBoomBoxLevel.BoxButtonInfos[i];
-                // print(i);
+
                 for (int j = 0; j < item.BoxButtonSetRows.Count; j++)
                 {
                     BoomBoxLevels.BoxButtonSetRow boxButtonSetRow = item.BoxButtonSetRows[j];
@@ -141,6 +169,9 @@ namespace BoomBox
                             CurrentRowIndex = i,
                         };
 
+                        boxButton.TotalCount = boxButtonSetRow.Height;
+                        boxButton.CurrentCount = boxButtonSetRow.Height;
+
                         if (boxButton.BoxButtonInfo.CurrentRowIndex == 0)
                         {
                             boxButton.BoxButtonInfo.CanShoot = true;
@@ -149,6 +180,7 @@ namespace BoomBox
 
                         BoxButtons.Add(boxButton);
                         boxButton.OnCanShoot += AddBoxButtonToBeShot;
+                        boxButton.OnAllHit += MoveBoxColumnDown;
                     }
                 }
             }
@@ -193,6 +225,7 @@ namespace BoomBox
         {
             if (!cubeButton.CubeButtonInfo.CanSelect)
             {
+                cubeButton.OnWrongClick();
                 VibrationManager.VibrateNope();
                 return;
             }
@@ -200,6 +233,7 @@ namespace BoomBox
             int freeSpotIndex = GetFirstFreeCubePlaceSpot();
             if (freeSpotIndex == -1)
             {
+                cubeButton.OnWrongClick();
                 VibrationManager.VibrateNope();
                 return;
             }
@@ -215,6 +249,7 @@ namespace BoomBox
                 cubeButton.transform.localPosition = Vector3.zero;
 
                 AddCubeButtonToSpot(cubeButton);
+                cubeButton.StartAnimating();
             });
 
             MoveCubeColumnUp(cubeButton.CubeButtonInfo.ColumnIndex);
@@ -273,7 +308,7 @@ namespace BoomBox
         }
         public void OnCubePlaceSpotUpdated()
         {
-            Debug.Log($"GG : Cube Place Spot Updated");
+            // Debug.Log($"GG : Cube Place Spot Updated");
             CheckShoot = CubeButtonsInPlaceSpots.Count != 0;
         }
         public void AddBoxButtonToBeShot(BoxButton boxButton)
@@ -283,34 +318,9 @@ namespace BoomBox
             BoxButtonToShoot.Add(boxButton);
         }
 
-        private bool CheckShoot = false;
-        public int BoxButtonShootCount = 0;
-
         private void FixedUpdate()
         {
             if (!CheckShoot) return;
-
-            // HashSet<CubeColor> cubeColors = new();
-            // HashSet<BoxButton> ShootBoxButton = new();
-
-            // foreach (BoxButton item in BoxButtonToShoot)
-            // {
-            //     if (!item.BoxButtonInfo.CanShoot) continue;
-
-            //     if (cubeColors.Contains(item.BoxButtonInfo.CubeColor)) continue;
-
-            //     cubeColors.Add(item.BoxButtonInfo.CubeColor);
-            // }
-
-            // foreach (CubeButton item in CubeButtonsInPlaceSpots)
-            // {
-            //     if (!cubeColors.Contains(item.CubeButtonInfo.CubeColor)) continue;
-
-            //     if (item.CubeButtonInfo.Count == 0)
-            //     {
-            //         continue;
-            //     }
-            // }
 
             if (CubeButtonsInPlaceSpots.Count == 0)
             {
@@ -331,47 +341,26 @@ namespace BoomBox
 
         private void CheckShootForCube(CubeButton cubeButton)
         {
-            foreach (BoxButton item in BoxButtonToShoot)
+            foreach (BoxButton box in BoxButtonToShoot)
             {
-                if (!item.BoxButtonInfo.CanShoot) continue;
+                if (!box.BoxButtonInfo.CanShoot) continue;
 
-                if (item.BoxButtonInfo.CubeColor != cubeButton.CubeButtonInfo.CubeColor) continue;
-
-                item.BoxButtonInfo.CanShoot = false;
-                item.BoxButtonInfo.IsHit = true;
+                if (box.BoxButtonInfo.CubeColor != cubeButton.CubeButtonInfo.CubeColor) continue;
 
                 BoxButtonShootCount++;
                 cubeButton.DecreaseCount();
 
                 if (cubeButton.CubeButtonInfo.Count == 0)
                 {
-                    RemoveCubeButtonFromSpot(cubeButton);
-                    if (cubeButton.CubeButtonInfo.CurrentSpotIndex < IsCubePlaceSpotOccupied.Count / 2)
-                    {
-                        cubeButton.transform.DOMove(CubeLeftSpot.transform.position, 0.5f).SetEase(Ease.OutSine).OnComplete(() =>
-                        {
-                            cubeButton.transform.SetParent(CubeLeftSpot.transform);
-                            cubeButton.transform.localPosition = Vector3.zero;
-                        });
-                    }
-                    else
-                    {
-                        cubeButton.transform.DOMove(CubeRightSpot.transform.position, 0.5f).SetEase(Ease.OutSine).OnComplete(() =>
-                        {
-                            cubeButton.transform.SetParent(CubeRightSpot.transform);
-                            cubeButton.transform.localPosition = Vector3.zero;
-                        });
-                    }
+                    AnimateBoxOutOfSpot(cubeButton);
                 }
 
-                item.gameObject.SetActive(false);
-                BoxButtonToShoot.Remove(item);
+                BoxButtonToShoot.Remove(box);
+                box.OnHit();
 
                 VibrationManager.VibratePop();
 
-                MoveBoxColumnDown(item.BoxButtonInfo.ColumnIndex);
-
-                if (BoxButtonShootCount == BoxButtons.Count)
+                if (BoxButtonShootCount == CurrentBoomBoxLevel.BoxButtonCount)
                 {
                     OnLevelCompleted();
                     CheckShoot = false;
@@ -402,12 +391,60 @@ namespace BoomBox
                 });
             }
         }
+        private void AnimateBoxOutOfSpot(CubeButton cubeButton)
+        {
+            Transform endTransform = cubeButton.CubeButtonInfo.CurrentSpotIndex < IsCubePlaceSpotOccupied.Count / 2 ? CubeLeftSpot.transform : CubeRightSpot.transform;
+
+            cubeButton.StopAnimating();
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(cubeButton.transform.DOScale(1.25f, 0.5f).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo)
+                .OnComplete(() =>
+                {
+                    RemoveCubeButtonFromSpot(cubeButton);
+                }));
+            sequence.Append(cubeButton.transform.DOMove(endTransform.position, 0.5f).SetEase(Ease.OutSine));
+            sequence.Play().OnComplete(() =>
+            {
+                cubeButton.transform.SetParent(endTransform);
+                cubeButton.transform.localPosition = Vector3.zero;
+                cubeButton.transform.localScale = Vector3.one;
+            });
+        }
+        #endregion
+
+        #region Reload Button
+        private void ShowReloadButton()
+        {
+            ReloadButton.transform.DOMove(ReloadButtonEndPoint.position, 0.5f).SetEase(Ease.InSine).OnComplete(() =>
+            {
+                ReloadButton.enabled = true;
+            });
+        }
+        private void HideReloadButton()
+        {
+            ReloadButton.enabled = false;
+            ReloadButton.transform.DOMove(ReloadButtonStartPoint.position, 0.5f).SetEase(Ease.InSine);
+        }
+        #endregion
+
+        #region Show Progress Bar
+        public void ShowProgressBar()
+        {
+            ProgressPanel.transform.DOMove(ProgressPanelEndPoint.position, 0.5f).SetEase(Ease.InOutSine);
+        }
+        public void HideProgressBar()
+        {
+            ProgressPanel.transform.DOMove(ProgressPanelStartPoint.position, 0.5f).SetEase(Ease.OutBack);
+        }
         #endregion
 
         private void OnLevelCompleted()
         {
             Debug.Log($"GG : Level Completed");
-            LevelComplete?.SetActive(true);
+            starManager.OnLevelCompleted();
+            HideReloadButton();
+            HideProgressBar();
         }
     }
 }

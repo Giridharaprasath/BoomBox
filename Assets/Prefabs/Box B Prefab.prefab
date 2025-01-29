@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2594314534294995079}
   - component: {fileID: 64401773142286837}
   - component: {fileID: 1644348065830559114}
+  - component: {fileID: 8978313556736794068}
   m_Layer: 5
   m_Name: Box B Prefab
   m_TagString: Untagged
@@ -53,7 +54,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7386690784956970619}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -93,4 +94,25 @@ MonoBehaviour:
     ColumnIndex: 0
     StartRowIndex: 0
     CurrentRowIndex: 0
-  Image: {fileID: 64401773142286837}
+    CanShoot: 0
+    IsHit: 0
+  Color: {r: 0, g: 0, b: 0, a: 0}
+  OtherBoxObject: {fileID: 7386690784956970619, guid: 256ed1d12af7d794c838bc74d3dbfbd4, type: 3}
+  OtherBoxes: []
+  TotalCount: 0
+  CurrentCount: 0
+--- !u!114 &8978313556736794068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7386690784956970619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: -15, y: 15}
+  m_UseGraphicAlpha: 1

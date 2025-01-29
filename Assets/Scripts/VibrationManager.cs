@@ -56,7 +56,7 @@ namespace BoomBox
             if (Application.isMobilePlatform)
             {
 #if UNITY_ANDROID
-                VibrateAndroid(25);
+                VibrateAndroid(5);
 #endif
             }
         }
@@ -66,7 +66,7 @@ namespace BoomBox
             if (Application.isMobilePlatform)
             {
 #if UNITY_ANDROID
-                VibrateAndroid(50);
+                VibrateAndroid(15);
 #endif
             }
         }
@@ -78,6 +78,17 @@ namespace BoomBox
 #if UNITY_ANDROID
                 long[] pattern = { 0, 50, 50, 50 };
                 VibrateAndroid(pattern, -1);
+#endif
+            }
+        }
+
+        public static void VibrateStarCollect()
+        {
+            if (Application.isMobilePlatform)
+            {
+#if UNITY_ANDROID
+                long[] pattern = { 10, 50, 50 };
+                VibrateAndroid(pattern, 10);
 #endif
             }
         }

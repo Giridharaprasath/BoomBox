@@ -38,9 +38,16 @@ namespace BoomBox
 
         public Action<CubeButton> OnClicked;
 
+        private Sequence sequence;
+
         private void Start()
         {
             InitCubeButton();
+        }
+
+        private void OnDestroy()
+        {
+            sequence.Kill();
         }
 
         public void InitCubeButton()
@@ -92,6 +99,24 @@ namespace BoomBox
         {
             CubeButtonInfo.Count--;
             CountText.text = CubeButtonInfo.Count.ToString();
+        }
+        public void OnWrongClick()
+        {
+            transform.DOShakeRotation(1f, new Vector3(0f, 0f, 15f));
+        }
+        public void StartAnimating()
+        {
+            CountText.DOFade(1f, 0.5f).SetEase(Ease.OutSine);
+
+            sequence = DOTween.Sequence();
+            sequence.Append(transform.DOScale(1.025f, 0.5f).SetEase(Ease.OutSine));
+            sequence.Append(transform.DOScale(1f, 0.5f).SetEase(Ease.OutSine));
+            sequence.Play().SetLoops(-1);
+        }
+        public void StopAnimating()
+        {
+            sequence.Kill();
+            transform.localScale = Vector3.one;
         }
     }
 }
