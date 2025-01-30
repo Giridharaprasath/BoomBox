@@ -1,0 +1,232 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b61bfcfcc238340a44c5b64be97087, type: 3}
+  m_Name: BoomBoxLevel_7
+  m_EditorClassIdentifier: 
+  LevelNumber: 7
+  CubePlaceSlotCount: 5
+  CubeButtonCount: 12
+  CubeButtonColumnCount: 3
+  CubeButtonRowCount: 4
+  BoxButtonCount: 240
+  BoxButtonColumnCount: 10
+  BoxButtonRowCount: 12
+  CubeButtonInfos:
+  - CubeColor: 0
+    Count: 20
+    CanSelect: 1
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 1
+    Count: 20
+    CanSelect: 1
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 3
+    Count: 20
+    CanSelect: 1
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 0
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 0
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 1
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 0
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 1
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 3
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 3
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 3
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  - CubeColor: 1
+    Count: 20
+    CanSelect: 0
+    ColumnIndex: 0
+    StartRowIndex: 0
+    CurrentRowIndex: 0
+    CurrentSpotIndex: -1
+  BoxButtonInfos:
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 1
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 0
+      StartColumnIndex: 0
+      EndColumnIndex: 2
+      Height: 2
+    - BoxColor: 3
+      StartColumnIndex: 3
+      EndColumnIndex: 7
+      Height: 2
+    - BoxColor: 0
+      StartColumnIndex: 8
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 3
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+      Height: 2
+    - BoxColor: 1
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+      Height: 2
+  - BoxButtonSetRows:
+    - BoxColor: 3
+      StartColumnIndex: 0
+      EndColumnIndex: 4
+      Height: 2
+    - BoxColor: 1
+      StartColumnIndex: 5
+      EndColumnIndex: 9
+      Height: 2

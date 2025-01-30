@@ -36,6 +36,8 @@ namespace BoomBox
 
         public GameObject CubeLeftSpot, CubeRightSpot;
 
+        public List<Sprite> CubeColorSprites;
+
         [Header("Level Objects Created")]
         public List<GameObject> CubePlaceSpots;
         public List<CubeButton> CubeButtons;
@@ -60,8 +62,15 @@ namespace BoomBox
 
         [Header("Progress Bar")]
         public GameObject ProgressPanel;
+        public Image ProgressBar;
         public Text[] LevelText;
         public Transform ProgressPanelStartPoint, ProgressPanelEndPoint;
+
+        [Header("Add Extra Place Slot")]
+        private const int maxSlots = 7;
+        public int CurrentSlotCount;
+        public Button GetExtraSlot;
+        public Text NextSlotRateText;
 
         private int BoxButtonShootCount = 0;
         private bool CheckShoot = false;
@@ -80,6 +89,7 @@ namespace BoomBox
             CreateCubeButtons();
 
             IsCubePlaceSpotOccupied = new List<bool>(new bool[CubePlaceSpots.Count]);
+            CurrentSlotCount = CubePlaceSpots.Count;
 
             ReloadButton.onClick.AddListener(LoadScene);
             ShowReloadButton();
@@ -89,6 +99,12 @@ namespace BoomBox
                 item.text = "Level " + CurrentLevelNumber;
             }
             ShowProgressBar();
+
+            GetExtraSlot.onClick.AddListener(BuyExtraSlotProcess);
+            NextSlotRateText.text = CurrentSlotCount.ToString();
+
+            if (CurrentLevelNumber == 1)
+                GetExtraSlot.gameObject.SetActive(false);
         }
         private void OnDestroy()
         {
@@ -167,6 +183,17 @@ namespace BoomBox
                             CurrentRowIndex = i,
                         };
 
+                        boxButton.BoxSprite = boxButtonSetRow.BoxColor switch
+                        {
+                            CubeColor.Yellow => CubeColorSprites[0],
+                            CubeColor.Red => CubeColorSprites[1],
+                            CubeColor.Green => CubeColorSprites[2],
+                            CubeColor.Blue => CubeColorSprites[3],
+                            CubeColor.Pink => CubeColorSprites[4],
+                            CubeColor.Orange => CubeColorSprites[5],
+                            _ => CubeColorSprites[6],
+                        };
+
                         boxButton.TotalCount = boxButtonSetRow.Height;
                         boxButton.CurrentCount = boxButtonSetRow.Height;
 
@@ -212,6 +239,17 @@ namespace BoomBox
                     CurrentRowIndex = i / CurrentBoomBoxLevel.CubeButtonColumnCount,
                 };
 
+                cubeButton.Image.sprite = cubeButton.CubeButtonInfo.CubeColor switch
+                {
+                    CubeColor.Yellow => CubeColorSprites[0],
+                    CubeColor.Red => CubeColorSprites[1],
+                    CubeColor.Green => CubeColorSprites[2],
+                    CubeColor.Blue => CubeColorSprites[3],
+                    CubeColor.Pink => CubeColorSprites[4],
+                    CubeColor.Orange => CubeColorSprites[5],
+                    _ => CubeColorSprites[6],
+                };
+
                 CubeButtons.Add(cubeButton);
                 cubeButton.OnClicked += AddCubeButtonToCubePlaceSpot;
             }
@@ -223,7 +261,7 @@ namespace BoomBox
         {
             if (!cubeButton.CubeButtonInfo.CanSelect)
             {
-                cubeButton.OnWrongClick();
+                cubeButton.OnClickShake();
                 VibrationManager.VibrateNope();
                 return;
             }
@@ -231,7 +269,7 @@ namespace BoomBox
             int freeSpotIndex = GetFirstFreeCubePlaceSpot();
             if (freeSpotIndex == -1)
             {
-                cubeButton.OnWrongClick();
+                cubeButton.OnClickShake();
                 VibrationManager.VibrateNope();
                 return;
             }
@@ -241,7 +279,7 @@ namespace BoomBox
             IsCubePlaceSpotOccupied[freeSpotIndex] = true;
 
             cubeButton.SetSpotIndex(freeSpotIndex);
-            cubeButton.transform.DOMove(CubePlaceSpots[freeSpotIndex].transform.position, 0.5f).SetEase(Ease.OutSine).OnComplete(() =>
+            cubeButton.transform.DOJump(CubePlaceSpots[freeSpotIndex].transform.position, 1.5f, 2, 0.75f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
                 cubeButton.transform.SetParent(CubePlaceSpots[freeSpotIndex].transform);
                 cubeButton.transform.localPosition = Vector3.zero;
@@ -346,8 +384,12 @@ namespace BoomBox
                 if (box.BoxButtonInfo.CubeColor != cubeButton.CubeButtonInfo.CubeColor) continue;
 
                 BoxButtonShootCount++;
+                // Debug.Log($"GG : {(float)BoxButtonShootCount / CurrentBoomBoxLevel.BoxButtonCount}");
+                ProgressBar.fillAmount = (float)BoxButtonShootCount / CurrentBoomBoxLevel.BoxButtonCount;
+
                 cubeButton.DecreaseCount();
 
+                cubeButton.ShowShootEffect();
                 if (cubeButton.CubeButtonInfo.Count == 0)
                 {
                     AnimateBoxOutOfSpot(cubeButton);
@@ -394,19 +436,21 @@ namespace BoomBox
             Transform endTransform = cubeButton.CubeButtonInfo.CurrentSpotIndex < IsCubePlaceSpotOccupied.Count / 2 ? CubeLeftSpot.transform : CubeRightSpot.transform;
 
             cubeButton.StopAnimating();
+            cubeButton.transform.SetParent(endTransform, true);
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(cubeButton.transform.DOScale(1.25f, 0.5f).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo)
+            sequence.Append(cubeButton.transform.DOScale(0.75f, 0.5f).SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
                     RemoveCubeButtonFromSpot(cubeButton);
                 }));
-            sequence.Append(cubeButton.transform.DOMove(endTransform.position, 0.5f).SetEase(Ease.OutSine));
+            sequence.Append(cubeButton.transform.DOJump(endTransform.position, 1.5f, 2, 1f).SetEase(Ease.OutSine));
             sequence.Play().OnComplete(() =>
             {
                 cubeButton.transform.SetParent(endTransform);
                 cubeButton.transform.localPosition = Vector3.zero;
                 cubeButton.transform.localScale = Vector3.one;
+                cubeButton.gameObject.SetActive(false);
             });
         }
         #endregion
@@ -437,6 +481,39 @@ namespace BoomBox
         }
         #endregion
 
+        #region Extra Slot Process
+        private void BuyExtraSlotProcess()
+        {
+            if (CurrentSlotCount == maxSlots) return;
+
+            int nextRate = CurrentSlotCount;
+            int currentStarCount = starManager.GetStarCount();
+
+            if (currentStarCount < nextRate)
+            {
+                VibrationManager.VibrateNope();
+                return;
+            }
+
+            CurrentSlotCount++;
+            IsCubePlaceSpotOccupied.Add(false);
+            GameObject cubePlaceSpot = Instantiate(CubePlaceSpotPrefab, CubePlaceSpotParentObject.transform);
+            cubePlaceSpot.name = $"Cube PS{CurrentSlotCount}";
+
+            CubePlaceSpots.Add(cubePlaceSpot);
+
+            starManager.SetStarCount(currentStarCount - nextRate);
+            starManager.SetStarCountText();
+
+            NextSlotRateText.text = CurrentSlotCount.ToString();
+
+            if (CurrentSlotCount == maxSlots)
+            {
+                GetExtraSlot.gameObject.SetActive(false);
+            }
+        }
+        #endregion
+
         private void OnLevelCompleted()
         {
             Debug.Log($"GG : Level Completed");
@@ -452,7 +529,7 @@ namespace BoomBox
             CurrentLevelNumber++;
 
             if (CurrentLevelNumber > AllBoomBoxLevels.Count) CurrentLevelNumber = 1;
-            
+
             PlayerPrefs.SetInt("CurrentLevelNumber", CurrentLevelNumber);
         }
     }

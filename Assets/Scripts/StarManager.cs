@@ -29,11 +29,16 @@ namespace BoomBox
         private void Start()
         {
             StarCount = PlayerPrefs.GetInt("StarCount", 0);
-            StarCountText.text = StarCount.ToString();
+            SetStarCountText();
         }
         private void OnDestroy()
         {
             DOTween.KillAll();
+        }
+
+        public int GetStarCount()
+        {
+            return StarCount;
         }
 
         public void OnLevelCompleted()
@@ -45,11 +50,11 @@ namespace BoomBox
 
         private void ShowParticleEffect()
         {
+            LevelCompletePage.SetActive(true);
             Invoke(nameof(ShowCompletedPage), 2f);
         }
         private void ShowCompletedPage()
         {
-            LevelCompletePage.SetActive(true);
             PageBG.DOFade(0.9f, 0.75f).SetEase(Ease.Linear);
             Invoke(nameof(ShowCompletedText), 1f);
         }
@@ -118,6 +123,10 @@ namespace BoomBox
         {
             StarCount = count;
             PlayerPrefs.SetInt("StarCount", StarCount);
+        }
+        public void SetStarCountText()
+        {
+            StarCountText.text = StarCount.ToString();
         }
         public void ShowContinueButton()
         {

@@ -32,7 +32,7 @@ namespace BoomBox
     public class BoxButton : MonoBehaviour
     {
         public BoxButtonInfo BoxButtonInfo;
-        public Color Color;
+        public Sprite BoxSprite;
 
         public Action<BoxButton> OnCanShoot;
         public Action<int> OnAllHit;
@@ -41,6 +41,8 @@ namespace BoomBox
         public int TotalCount;
         public int CurrentCount;
 
+        public ParticleSystem HitEffect;
+
         private void Start()
         {
             InitCubeButton();
@@ -48,22 +50,11 @@ namespace BoomBox
 
         public void InitCubeButton()
         {
-            Color = BoxButtonInfo.CubeColor switch
-            {
-                CubeColor.Yellow => Color.yellow,
-                CubeColor.Red => Color.red,
-                CubeColor.Green => Color.green,
-                CubeColor.Blue => Color.blue,
-                CubeColor.Pink => new Color(1f, 0.75f, 0.8f),
-                CubeColor.Orange => new Color(1f, 0.5f, 0f),
-                _ => Color.white,
-            };
-
             for (int i = 0; i < TotalCount; i++)
             {
                 GameObject box = Instantiate(OtherBoxObject, transform);
                 box.transform.localPosition = new Vector3(0f, 30f * i, 0f);
-                box.GetComponent<Image>().color = Color;
+                box.GetComponent<Image>().sprite = BoxSprite;
                 OtherBoxes.Add(box);
             }
 
@@ -92,6 +83,8 @@ namespace BoomBox
             // OtherBoxes[CurrentCount].SetActive(false);
             AnimateObject(OtherBoxes[CurrentCount]);
 
+            HitEffect.Play();
+
             if (CurrentCount == 0)
             {
                 BoxButtonInfo.IsHit = true;
@@ -109,7 +102,7 @@ namespace BoomBox
             Image img = gameObject.GetComponent<Image>();
 
             gameObject.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.OutSine);
-            img.DOFade(0f, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+            img.DOFade(0f, 1f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 gameObject.SetActive(false);
             });

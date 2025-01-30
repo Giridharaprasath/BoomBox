@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using System.Collections;
 
 namespace BoomBox
 {
@@ -39,6 +40,9 @@ namespace BoomBox
         public Action<CubeButton> OnClicked;
 
         private Sequence sequence;
+        private bool IsAnimating;
+        public GameObject HitPS;
+        private bool IsShootEffectOn;
 
         private void Start()
         {
@@ -56,17 +60,6 @@ namespace BoomBox
             {
                 CubeButtonInfo.CanSelect = true;
             }
-
-            Image.color = CubeButtonInfo.CubeColor switch
-            {
-                CubeColor.Yellow => Color.yellow,
-                CubeColor.Red => Color.red,
-                CubeColor.Green => Color.green,
-                CubeColor.Blue => Color.blue,
-                CubeColor.Pink => new Color(1f, 0.75f, 0.8f),
-                CubeColor.Orange => new Color(1f, 0.5f, 0f),
-                _ => Color.white,
-            };
 
             CountText.text = CubeButtonInfo.Count.ToString();
 
@@ -100,9 +93,14 @@ namespace BoomBox
             CubeButtonInfo.Count--;
             CountText.text = CubeButtonInfo.Count.ToString();
         }
-        public void OnWrongClick()
+        public void OnClickShake()
         {
-            transform.DOShakeRotation(1f, new Vector3(0f, 0f, 15f));
+            if (IsAnimating) return;
+
+            transform.DOShakeRotation(1f, new Vector3(0f, 0f, 15f)).SetEase(Ease.OutSine).SetDelay(0.1f).OnComplete(() =>
+            {
+                IsAnimating = false;
+            });
         }
         public void StartAnimating()
         {
@@ -117,6 +115,21 @@ namespace BoomBox
         {
             sequence.Kill();
             transform.localScale = Vector3.one;
+        }
+
+        public void ShowShootEffect()
+        {
+            if (IsShootEffectOn) return;
+
+            StartCoroutine(StartShootEffect());
+        }
+        private IEnumerator StartShootEffect()
+        {
+            IsShootEffectOn = true;
+            HitPS.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
+            HitPS.SetActive(false);
+            IsShootEffectOn = false;
         }
     }
 }
