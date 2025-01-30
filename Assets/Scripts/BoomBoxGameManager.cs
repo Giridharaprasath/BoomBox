@@ -109,8 +109,6 @@ namespace BoomBox
             if (CurrentLevelNumber < 1) CurrentLevelNumber = AllBoomBoxLevels.Count;
             if (CurrentLevelNumber > AllBoomBoxLevels.Count) CurrentLevelNumber = 1;
 
-            PlayerPrefs.SetInt("CurrentLevelNumber", CurrentLevelNumber);
-
             LoadScene();
         }
         public void LoadScene()
@@ -445,6 +443,17 @@ namespace BoomBox
             starManager.OnLevelCompleted();
             HideReloadButton();
             HideProgressBar();
+
+            SaveLevelProgress();
+        }
+
+        private void SaveLevelProgress()
+        {
+            CurrentLevelNumber++;
+
+            if (CurrentLevelNumber > AllBoomBoxLevels.Count) CurrentLevelNumber = 1;
+            
+            PlayerPrefs.SetInt("CurrentLevelNumber", CurrentLevelNumber);
         }
     }
 }

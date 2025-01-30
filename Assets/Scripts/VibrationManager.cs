@@ -87,8 +87,8 @@ namespace BoomBox
             if (Application.isMobilePlatform)
             {
 #if UNITY_ANDROID
-                long[] pattern = { 10, 50, 50 };
-                VibrateAndroid(pattern, 10);
+                long[] pattern = { 0, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+                VibrateAndroid(pattern, -1);
 #endif
             }
         }

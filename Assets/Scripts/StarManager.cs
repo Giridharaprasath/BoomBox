@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ namespace BoomBox
         private void Start()
         {
             StarCount = PlayerPrefs.GetInt("StarCount", 0);
-            StarCountText.text = TempStarCount.ToString();
+            StarCountText.text = StarCount.ToString();
         }
         private void OnDestroy()
         {
@@ -78,10 +79,10 @@ namespace BoomBox
         private void ShowAddStarObject()
         {
             StarAddObject.SetActive(true);
-            AnimateStarCount();
+            StartCoroutine(AnimateStarCount());
             AnimateMoveStar();
 
-            Invoke(nameof(PlayVibration), 0.6f);
+            Invoke(nameof(PlayVibration), 0.75f);
         }
         private void AnimateMoveStar()
         {
@@ -97,18 +98,21 @@ namespace BoomBox
                 StarMoveObjects[i].transform.localScale = Vector3.zero;
                 StarMoveObjects[i].transform.DOScale(targetScale, scaleDuration).SetDelay(delay).SetEase(Ease.OutBack);
                 StarMoveObjects[i].transform.DOMove(StarTargetPosition.position, moveDuration).SetDelay(delay + 0.5f).SetEase(Ease.InBack);
-                StarMoveObjects[i].transform.DORotate(new(0f, 0f, 375f), punchDuration, RotateMode.FastBeyond360).SetDelay(delay + 0.5f).SetEase(Ease.Flash).OnComplete(AnimateStarCount); ;
+                StarMoveObjects[i].transform.DORotate(new(0f, 0f, 375f), punchDuration, RotateMode.FastBeyond360).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
                 StarMoveObjects[i].transform.DOScale(Vector3.zero, scaleDuration).SetDelay(delay + 1.8f).SetEase(Ease.OutBack);
                 delay += 0.1f;
             }
         }
         private void PlayVibration() => VibrationManager.VibrateStarCollect();
-        public void AnimateStarCount()
+        private IEnumerator AnimateStarCount()
         {
-            if (TempStarCount >= StarCount) return;
-
-            ++TempStarCount;
-            StarCountText.text = TempStarCount.ToString();
+            yield return new WaitForSeconds(1.25f);
+            while(TempStarCount < StarCount)
+            {
+                yield return new WaitForSeconds(0.1f);
+                ++TempStarCount;
+                StarCountText.text = TempStarCount.ToString();
+            }
         }
         public void SetStarCount(int count)
         {
