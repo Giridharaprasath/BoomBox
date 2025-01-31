@@ -41,8 +41,7 @@ namespace BoomBox
 
         private Sequence sequence;
         private bool IsAnimating;
-        public GameObject HitPS;
-        private bool IsShootEffectOn;
+        public ParticleSystem ShootPS;
 
         private void Start()
         {
@@ -119,17 +118,8 @@ namespace BoomBox
 
         public void ShowShootEffect()
         {
-            if (IsShootEffectOn) return;
-
-            StartCoroutine(StartShootEffect());
-        }
-        private IEnumerator StartShootEffect()
-        {
-            IsShootEffectOn = true;
-            HitPS.SetActive(true);
-            yield return new WaitForSeconds(1.5f);
-            HitPS.SetActive(false);
-            IsShootEffectOn = false;
+            ShootPS.Emit(1);
+            ShootPS.Play();
         }
     }
 }

@@ -389,6 +389,9 @@ namespace BoomBox
 
                 cubeButton.DecreaseCount();
 
+                int mul = cubeButton.CubeButtonInfo.CurrentSpotIndex < IsCubePlaceSpotOccupied.Count / 2 ? -1 : 1;
+                cubeButton.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(25 * mul, 50 * mul)), 0.03f).OnComplete(() => cubeButton.transform.rotation = Quaternion.identity);
+
                 cubeButton.ShowShootEffect();
                 if (cubeButton.CubeButtonInfo.Count == 0)
                 {
