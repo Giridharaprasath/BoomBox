@@ -81,7 +81,6 @@ namespace BoomBox
             DOTween.SetTweensCapacity(2000, 100);
 
             CurrentLevelNumber = PlayerPrefs.GetInt("CurrentLevelNumber", 1);
-
             CurrentBoomBoxLevel = AllBoomBoxLevels[CurrentLevelNumber - 1];
 
             CreateCubePlaceSpots();
