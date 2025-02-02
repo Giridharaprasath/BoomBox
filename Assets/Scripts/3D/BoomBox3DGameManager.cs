@@ -20,6 +20,7 @@ namespace BoomBox
         public GameObject CubeButtonRow3DPrefab;
         public GameObject CubeButtonColumn3DPrefab;
         public CubeButton3D CubeButton3DPrefab;
+        public List<Material> CubeColorMaterials;
 
         [Header("Box Button 3D")]
         public GameObject BoxButton3DParentObject;
@@ -177,6 +178,17 @@ namespace BoomBox
                             CurrentRowIndex = i,
                         };
 
+                        boxButton.BoxColor = boxButtonSetRow.BoxColor switch
+                        {
+                            CubeColor.Yellow => CubeColorMaterials[0],
+                            CubeColor.Red => CubeColorMaterials[1],
+                            CubeColor.Green => CubeColorMaterials[2],
+                            CubeColor.Blue => CubeColorMaterials[3],
+                            CubeColor.Pink => CubeColorMaterials[4],
+                            CubeColor.Orange => CubeColorMaterials[5],
+                            _ => CubeColorMaterials[6],
+                        };
+
                         boxButton.TotalCount = boxButtonSetRow.Height;
                         boxButton.CurrentCount = boxButtonSetRow.Height;
 
@@ -219,6 +231,17 @@ namespace BoomBox
                     ColumnIndex = i % CurrentBoomBoxLevel.CubeButtonColumnCount,
                     StartRowIndex = i / CurrentBoomBoxLevel.CubeButtonColumnCount,
                     CurrentRowIndex = i / CurrentBoomBoxLevel.CubeButtonColumnCount,
+                };
+
+                cubeButton.CubeColor = cubeButton.CubeButtonInfo.CubeColor switch
+                {
+                    CubeColor.Yellow => CubeColorMaterials[0],
+                    CubeColor.Red => CubeColorMaterials[1],
+                    CubeColor.Green => CubeColorMaterials[2],
+                    CubeColor.Blue => CubeColorMaterials[3],
+                    CubeColor.Pink => CubeColorMaterials[4],
+                    CubeColor.Orange => CubeColorMaterials[5],
+                    _ => CubeColorMaterials[6],
                 };
 
                 CubeButtons3D.Add(cubeButton);

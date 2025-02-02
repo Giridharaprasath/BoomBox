@@ -1897,6 +1897,14 @@ MonoBehaviour:
   CubeButtonRow3DPrefab: {fileID: 6533873602745644324, guid: 228d858364a8b49468a629458c24c382, type: 3}
   CubeButtonColumn3DPrefab: {fileID: 1650865508558299253, guid: c30ef843ae7ea8e4c9685f7b12aa17bd, type: 3}
   CubeButton3DPrefab: {fileID: 938409706122264542, guid: 69cae8c10d63cbf498faff2eb0e1c7ec, type: 3}
+  CubeColorMaterials:
+  - {fileID: 2100000, guid: 9eeee11eec96ae844b675375b0e21c69, type: 2}
+  - {fileID: 2100000, guid: 141e6179145d1354c8fc9ebbca611cc6, type: 2}
+  - {fileID: 2100000, guid: 37863b9c8e029c44e9bafd1ff2f11a36, type: 2}
+  - {fileID: 2100000, guid: ffe563e1a6cb809459662c89b921a062, type: 2}
+  - {fileID: 2100000, guid: 837b38ef2a9c2f842941bf0285aeb4b2, type: 2}
+  - {fileID: 2100000, guid: 9580b1f137d191d47ab795b3f2cd2757, type: 2}
+  - {fileID: 2100000, guid: eb638ffec19c4224dbdd88fe4e9b40c7, type: 2}
   BoxButton3DParentObject: {fileID: 811740120}
   BoxButtonRow3DPrefab: {fileID: 1128796203815717758, guid: 9afe0a51e5a3a334b82d2d9a7cf9996f, type: 3}
   BoxButtonColumn3DPrefab: {fileID: 8903874672576610025, guid: 5940261285886184eaab39036f9ec9aa, type: 3}

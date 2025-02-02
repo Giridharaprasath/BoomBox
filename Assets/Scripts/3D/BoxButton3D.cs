@@ -11,6 +11,7 @@ namespace BoomBox
 
         public GameObject OtherBoxObject;
         public List<GameObject> OtherBoxes;
+        public Material BoxColor;
         public int TotalCount;
         public int CurrentCount;
         
@@ -29,23 +30,18 @@ namespace BoomBox
 
         public void InitBoxButton()
         {
-            Color boxColor = BoxButtonInfo.CubeColor switch
-            {
-                CubeColor.Yellow => Color.yellow,
-                CubeColor.Red => Color.red,
-                CubeColor.Green => Color.green,
-                CubeColor.Blue => Color.blue,
-                CubeColor.Pink => new(1.0f, 0.75f, 0.8f),
-                CubeColor.Orange => new(1.0f, 0.65f, 0.0f),
-                _ => Color.white,
-            };
-
             for (int i = 0; i < TotalCount; i++)
             {
                 GameObject box = Instantiate(OtherBoxObject, transform);
                 box.transform.localPosition = new Vector3(0f, 0f, -i);
-                box.GetComponent<Renderer>().material.color = boxColor;
+                box.GetComponent<Renderer>().material = BoxColor;
                 OtherBoxes.Add(box);
+            }
+
+            if (BoxButtonInfo.CurrentRowIndex < 10)
+            {
+                transform.localPosition = new Vector3(0f, 0f, -15f);
+                transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutQuad);
             }
         }
         

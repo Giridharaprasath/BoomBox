@@ -13,6 +13,8 @@ namespace BoomBox
         public Animator CharacterAnimator;
         public GameObject BulletSpawnPoint;
 
+        public Material CubeColor;
+
         private Sequence sequence;
         private bool IsAnimating;
         public Action<CubeButton3D> OnClicked;
@@ -41,19 +43,8 @@ namespace BoomBox
 
         public void InitCubeButton()
         {
-            Color cubeColor = CubeButtonInfo.CubeColor switch
-            {
-                CubeColor.Yellow => Color.yellow,
-                CubeColor.Red => Color.red,
-                CubeColor.Green => Color.green,
-                CubeColor.Blue => Color.blue,
-                CubeColor.Pink => new(1.0f, 0.75f, 0.8f),
-                CubeColor.Orange => new(1.0f, 0.65f, 0.0f),
-                _ => Color.white,
-            };
-
-            CharacterHead.material.color = cubeColor;
-            CharacterLeg.materials[1].color = cubeColor;
+            CharacterHead.material = CubeColor;
+            CharacterLeg.materials[1].color = CubeColor.color;
 
             CountText.text = CubeButtonInfo.Count.ToString();
             CountText.color = new(1f, 1f, 1f, 0.5f);
@@ -170,12 +161,12 @@ namespace BoomBox
 
         public void AnimateColor()
         {
-            Color oldColor = CharacterHead.material.color;
+            // Color oldColor = CharacterHead.material.color;
 
-            CharacterHead.material.DOColor(Color.white, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                CharacterHead.material.DOColor(oldColor, 0.2f);
-            });
+            // CharacterHead.material.DOColor(Color.white, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
+            // {
+            //     CharacterHead.material.DOColor(oldColor, 0.2f);
+            // });
         }
     }
 }
